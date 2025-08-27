@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JGREGORIOG77 - Comunidad Gamer V8</title>
+
+    <!-- Tipografía de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Librería de Animaciones AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <style>
+        /* --- 1. RESET Y VARIABLES GLOBALES --- */
+        :root {
+            --primary: #00ffcc;
+            --secondary: #7d00ff;
+            --neutral: #777777;
+            --background: #0a0a14;
+            --background-alt: #1a1a1a;
+            --border-color: #333;
+            --live-red: #ff003b;
+            /* Colores de Marca */
+            --youtube-red: #ff0000;
+            --instagram-pink: #e4405f;
+            --tiktok-white: #ffffff;
+            --twitch-purple: #9146FF;
+            --kick-green: #53FC18;
+            --facebook-blue: #1877F2;
+            --discord-blurple: #5865F2;
+            --whatsapp-green: #25D366;
+            --font-main: 'Orbitron', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--background);
+            color: var(--neutral);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            cursor: none;
+            position: relative;
+        }
+        body.modal-open { overflow: hidden; }
+
+        /* --- 2. FONDO ANIMADO --- */
+        #background-effects {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden;
+        }
+        .star {
+            position: absolute; background-color: white; border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.4; transform: scale(0.7); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+        .fog {
+            position: absolute; width: 200%; height: 100%;
+            background: radial-gradient(circle, rgba(125, 0, 255, 0.35) 10%, transparent 50%),
+                        radial-gradient(circle at bottom right, rgba(0, 255, 204, 0.3) 10%, transparent 60%);
+            opacity: 0.8;
+            animation: move-fog 40s linear infinite alternate;
+        }
+        @keyframes move-fog {
+            from { transform: translateX(-25%); }
+            to { transform: translateX(0%); }
+        }
+
+        /* --- 3. CURSOR, CONTENEDOR Y ESTILOS GLOBALES --- */
+        .custom-cursor {
+            position: fixed; width: 25px; height: 25px; border: 2px solid var(--primary);
+            border-radius: 50%; left: 0; top: 0; pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-width 0.2s ease;
+            z-index: 9999;
+        }
+        .custom-cursor.hover { width: 60px; height: 60px; background-color: rgba(0, 255, 204, 0.1); border-width: 3px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        section { padding: 120px 0; position: relative; }
+        h1, h2 { color: #ffffff; text-transform: uppercase; }
+        h1 { font-weight: 900; font-size: clamp(2.5rem, 10vw, 5rem); }
+        h2 { 
+            font-weight: 700; font-size: clamp(2rem, 8vw, 3rem); text-align: center; 
+            margin-bottom: 60px; position: relative; padding-bottom: 20px;
+        }
+        h2.with-line::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        p { line-height: 1.8; margin-bottom: 20px; }
+        .neon-text { 
+            color: var(--primary); 
+            text-shadow: 0 0 5px var(--primary), 0 0 15px var(--primary), 0 0 25px var(--primary);
+            animation: neon-pulse-subtle 5s infinite alternate;
+        }
+        @keyframes neon-pulse-subtle {
+            from { text-shadow: 0 0 5px var(--primary), 0 0 12px var(--primary); }
+            to { text-shadow: 0 0 10px var(--primary), 0 0 22px var(--primary); }
+        }
+
+        /* --- 4. HEADER Y NAVEGACIÓN (ACTUALIZADO) --- */
+        header {
+            position: fixed; width: 100%; top: 0; left: 0; z-index: 1000;
+            background-color: transparent; /* Transparente por defecto */
+            transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
+        }
+        header.sticky { 
+            background-color: rgba(10, 10, 20, 0.95); /* Color sólido casi opaco */
+            backdrop-filter: blur(10px); 
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; height: 80px; }
+        .logo { font-size: 1.8rem; font-weight: 800; text-decoration: none; color: var(--primary); }
+        nav ul { display: flex; list-style: none; gap: 40px; position: relative; }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        nav a:hover { color: var(--primary); }
+        #nav-active-line {
+            position: absolute; bottom: -5px; height: 3px;
+            background-color: var(--primary); box-shadow: 0 0 10px var(--primary);
+            transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .menu-toggle { display: none; }
+
+        /* --- 5. BANNER "EN VIVO" --- */
+        .live-status-banner {
+            position: fixed; top: 80px; width: 100%;
+            background-color: var(--background-alt);
+            z-index: 999; padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .live-status-banner .container { display: flex; justify-content: center; align-items: center; gap: 25px; flex-wrap: wrap; }
+        .status-item a { display: flex; align-items: center; gap: 10px; color: #fff; font-weight: 500; text-decoration: none; transition: opacity 0.3s; }
+        .status-item a:hover { opacity: 0.8; }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; background-color: var(--neutral); transition: background-color 0.3s; }
+        .status-item.live .status-dot {
+            background-color: var(--live-red);
+            animation: live-pulse-dot 1.5s infinite;
+        }
+        @keyframes live-pulse-dot {
+            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 0, 59, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 0, 59, 0); }
+            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 0, 59, 0); }
+        }
+
+        /* --- 6. HERO SECTION --- */
+        .hero {
+            padding-top: 120px; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+        }
+        .tagline { font-size: clamp(1rem, 4vw, 1.5rem); margin-top: 20px; font-weight: 500; color: var(--secondary); text-shadow: 0 0 10px var(--secondary); }
+        .glitch-text { position: relative; }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--background); overflow: hidden; clip-path: inset(50% 50% 50% 50%);
+        }
+        .glitch-text.glitching::before { left: -2px; text-shadow: 2px 0 var(--secondary); animation: glitch-anim 150ms infinite; }
+        .glitch-text.glitching::after { left: 2px; text-shadow: -2px 0 var(--primary); animation: glitch-anim 150ms infinite; }
+        @keyframes glitch-anim { 0% { clip-path: inset(40% 0 60% 0); } 100% { clip-path: inset(60% 0 40% 0); } }
+
+        /* --- 7. SECCIÓN SOBRE MÍ --- */
+        .about-content { display: grid; grid-template-columns: 1fr 2fr; gap: 50px; align-items: center; }
+        .about-image img { width: 100%; border-radius: 10px; border: 3px solid var(--primary); box-shadow: 0 0 25px rgba(0, 255, 204, 0.3); }
+
+        /* --- 8. CONTENT SHOWCASE (ACTUALIZADO) --- */
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .content-card {
+            border: 2px solid var(--border-color);
+            border-radius: 10px; overflow: hidden; transition: all 0.3s ease;
+            height: 250px;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+        .content-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); }
+        .content-card.youtube:hover { border-color: var(--youtube-red); }
+        .content-card.instagram:hover { border-color: var(--instagram-pink); }
+        .content-card.tiktok:hover { border-color: var(--tiktok-white); }
+        .card-info { 
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(10, 10, 20, 0.95) 20%, rgba(10, 10, 20, 0) 100%);
+        }
+        .card-info h3 { font-size: 1.2rem; margin-bottom: 10px; color: #fff; }
+        .card-platform { font-weight: 700; }
+        .card-platform.youtube { color: var(--youtube-red); text-shadow: 0 0 8px var(--youtube-red); }
+        .card-platform.instagram { color: var(--instagram-pink); text-shadow: 0 0 8px var(--instagram-pink); }
+        .card-platform.tiktok { color: var(--tiktok-white); text-shadow: 0 0 8px var(--tiktok-white); }
+
+        /* --- 9. MODAL/OVERLAY PARA CONTENIDO --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); z-index: 2000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
+        .modal-content { position: relative; width: 90%; height: 90%; max-width: 1200px; transform: scale(0.8); transition: transform 0.4s ease; }
+        .modal-overlay.visible .modal-content { transform: scale(1); }
+        .modal-close { position: absolute; top: -40px; right: 0; font-size: 2.5rem; color: #fff; text-decoration: none; font-weight: 900; }
+        #modal-embed-container { width: 100%; height: 100%; }
+        #modal-embed-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- 10. COMMAND CENTER --- */
+        .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .platform-button {
+            background-color: var(--background-alt); border: 2px solid var(--border-color); padding: 40px 20px;
+            text-align: center; text-decoration: none; font-size: 1.8rem; font-weight: 700;
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .platform-button:hover { transform: translateY(-10px) scale(1.05); }
+        .platform-button.twitch:hover { border-color: var(--twitch-purple); box-shadow: 0 0 20px var(--twitch-purple); }
+        .platform-button.kick:hover { border-color: var(--kick-green); box-shadow: 0 0 20px var(--kick-green); }
+        .platform-button.youtube:hover { border-color: var(--youtube-red); box-shadow: 0 0 20px var(--youtube-red); }
+        .platform-button.tiktok:hover { border-color: var(--tiktok-white); box-shadow: 0 0 20px var(--tiktok-white); }
+        .platform-button.instagram:hover { border-color: var(--instagram-pink); box-shadow: 0 0 20px var(--instagram-pink); }
+        .platform-button.facebook:hover { border-color: var(--facebook-blue); box-shadow: 0 0 20px var(--facebook-blue); }
+        
+        .platform-button .text-twitch { color: var(--twitch-purple); }
+        .platform-button .text-kick { color: var(--kick-green); }
+        .platform-button .text-youtube { color: var(--youtube-red); }
+        .platform-button .text-tiktok { color: var(--tiktok-white); }
+        .platform-button .text-instagram { color: var(--instagram-pink); }
+        .platform-button .text-facebook { color: var(--facebook-blue); }
+        .platform-button:hover span { color: #fff; }
+
+        /* --- 11. BANNER SECTIONS --- */
+        .promo-banner { padding: 80px 0; text-align: center; }
+        .promo-banner h3 { font-size: 2rem; margin-bottom: 30px; color: #fff; }
+        .promo-btn {
+            display: inline-block;
+            padding: 15px 40px; text-decoration: none; font-weight: 700;
+            border-radius: 5px; transition: all 0.3s;
+        }
+        .promo-btn:hover { transform: scale(1.1); }
+        #community { background-color: var(--discord-blurple); }
+        #community .promo-btn { background-color: #fff; color: var(--discord-blurple); }
+        #community .promo-btn:hover { box-shadow: 0 0 25px #fff; }
+        #community-whatsapp { background-color: var(--whatsapp-green); }
+        #community-whatsapp .promo-btn { background-color: #fff; color: var(--whatsapp-green); }
+        #community-whatsapp .promo-btn:hover { box-shadow: 0 0 25px #fff; }
+
+        /* --- 12. FORMULARIO DE CONTACTO --- */
+        .contact-form { max-width: 800px; margin: 0 auto; }
+        .form-group { margin-bottom: 25px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 15px; background-color: var(--background-alt);
+            border: 2px solid var(--border-color); color: #fff; font-family: var(--font-main);
+            font-size: 1rem; border-radius: 5px; transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+        .submit-btn {
+            background: var(--primary); border: 2px solid var(--primary); color: var(--background);
+            padding: 15px 30px; font-family: var(--font-main); font-size: 1.1rem;
+            font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: transparent; color: var(--primary);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        /* --- 13. FOOTER --- */
+        footer { background-color: var(--background); padding: 50px 0; text-align: center; border-top: 2px solid var(--border-color); }
+        .footer-socials { margin-top: 20px; display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
+        .footer-socials a { color: var(--neutral); text-decoration: none; font-size: 1.5rem; transition: all 0.3s; }
+        .footer-socials a:hover { color: var(--primary); transform: scale(1.2); }
+        .footer-socials svg { width: 28px; height: 28px; fill: currentColor; }
+
+        /* --- 14. RESPONSIVE DESIGN --- */
+        @media (max-width: 768px) {
+            nav ul {
+                position: fixed; top: 80px; right: -100%; width: 100%; height: calc(100vh - 80px);
+                background-color: rgba(17, 17, 17, 0.95); flex-direction: column;
+                align-items: center; justify-content: center; transition: right 0.5s ease-in-out;
+            }
+            nav ul.active { right: 0; }
+            .menu-toggle { display: flex; }
+            .about-content { grid-template-columns: 1fr; }
+            #nav-active-line { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="background-effects">
+        <div class="fog"></div>
+    </div>
+    <div class="custom-cursor"></div>
+
+    <!-- ======================= HEADER ======================= -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#hero" class="logo interactive">JGREGORIOG77</a>
+                <ul>
+                    <li><a href="#hero" class="nav-link interactive">Inicio</a></li>
+                    <li><a href="#about" class="nav-link interactive">Sobre Mí</a></li>
+                    <li><a href="#content-showcase" class="nav-link interactive">Contenido</a></li>
+                    <li><a href="#command-center" class="nav-link interactive">Plataformas</a></li>
+                    <li><a href="#community" class="nav-link interactive">Comunidad</a></li>
+                    <li><a href="#contact" class="nav-link interactive">Contacto</a></li>
+                    <div id="nav-active-line"></div>
+                </ul>
+                <div class="menu-toggle interactive">
+                    <div class="bar"></div> <div class="bar"></div> <div class="bar"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ======================= BANNER "EN VIVO" (ACTUALIZADO) ======================= -->
+    <div class="live-status-banner">
+        <div class="container">
+            <div class="status-item" id="status-twitch">
+                <a href="URL_TWITCH_LIVE" target="_blank" class="interactive"><div class="status-dot"></div><span>Twitch</span></a>
+            </div>
+            <div class="status-item" id="status-kick">
+                <a href="URL_KICK_LIVE" target="_blank" class="interactive"><div class="status-dot"></div><span>Kick</span></a>
+            </div>
+            <div class="status-item" id="status-youtube">
+                <a href="URL_YOUTUBE_LIVE" target="_blank" class="interactive"><div class="status-dot"></div><span>YouTube</span></a>
+            </div>
+            <div class="status-item" id="status-tiktok">
+                <a href="URL_TIKTOK_LIVE" target="_blank" class="interactive"><div class="status-dot"></div><span>TikTok</span></a>
+            </div>
+            <div class="status-item" id="status-facebook">
+                <a href="URL_FACEBOOK_LIVE" target="_blank" class="interactive"><div class="status-dot"></div><span>Facebook</span></a>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <!-- ======================= HERO SECTION ======================= -->
+        <section id="hero" class="hero">
+            <div class="hero-content">
+                <h1 class="glitch-text neon-text" data-text="JGREGORIOG77">JGREGORIOG77</h1>
+                <p class="tagline">Donde cada partida es una historia.</p>
+            </div>
+        </section>
+
+        <!-- ======================= SOBRE MÍ ======================= -->
+        <section id="about">
+            <div class="container" data-aos="fade-up">
+                <h2 class="with-line">Sobre Mí</h2>
+                <div class="about-content">
+                    <div class="about-image"><img src="https://placehold.co/600x600/7d00ff/00ffcc?text=JG77" alt="Foto de JGREGORIOG77"></div>
+                    <div class="about-text">
+                        <h3>Creador de Contenido & Streamer</h3>
+                        <p>¡Bienvenid@ a la locura! Soy JGREGORIOG77, un apasionado por los streams diarios, los videojuegos que nos quitan el sueño y las aventuras IRL. Mi misión es simple: compartir momentos épicos y construir una comunidad increíble con la que reír y disfrutar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= CONTENT SHOWCASE (ACTUALIZADO) ======================= -->
+        <section id="content-showcase">
+            <div class="container" data-aos="fade-up">
+                <h2 class="with-line">Contenido Destacado</h2>
+                <div class="content-grid">
+                    <div class="content-card youtube interactive" data-url="https://www.youtube.com/embed/dQw4w9WgXcQ" style="background-image: url('https://placehold.co/600x400/000000/FFFFFF?text=Fondo+Video');">
+                        <div class="card-info">
+                            <h3>La Partida que lo Cambió Todo</h3>
+                            <span class="card-platform youtube">YouTube</span>
+                        </div>
+                    </div>
+                    <div class="content-card instagram interactive" data-url="https://www.instagram.com/p/C2XvYzOMk-p/embed" style="background-image: url('https://placehold.co/600x400/000000/FFFFFF?text=Fondo+Post');">
+                        <div class="card-info">
+                            <h3>Nuestro Setup Gamer 2025</h3>
+                            <span class="card-platform instagram">Instagram</span>
+                        </div>
+                    </div>
+                    <div class="content-card tiktok interactive" data-url="https://www.tiktok.com/@google/video/7081237731129593094" style="background-image: url('https://placehold.co/600x400/000000/FFFFFF?text=Fondo+Clip');">
+                        <div class="card-info">
+                            <h3>El Clip más Random</h3>
+                            <span class="card-platform tiktok">TikTok</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ======================= COMMAND CENTER (ACTUALIZADO) ======================= -->
+        <section id="command-center">
+            <div class="container" data-aos="fade-up">
+                <h2 class="with-line">Centro de Mando</h2>
+                <div class="platform-grid">
+                    <div class="platform-button twitch interactive" data-url="URL_TWITCH"><span class="text-twitch">Twitch</span></div>
+                    <div class="platform-button kick interactive" data-url="URL_KICK"><span class="text-kick">Kick</span></div>
+                    <div class="platform-button youtube interactive" data-url="URL_YOUTUBE"><span class="text-youtube">YouTube</span></div>
+                    <div class="platform-button tiktok interactive" data-url="URL_TIKTOK"><span class="text-tiktok">TikTok</span></div>
+                    <div class="platform-button instagram interactive" data-url="URL_INSTAGRAM"><span class="text-instagram">Instagram</span></div>
+                    <div class="platform-button facebook interactive" data-url="URL_FACEBOOK"><span class="text-facebook">Facebook</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= COMUNIDAD BANNERS (ACTUALIZADO) ======================= -->
+        <section id="community" class="promo-banner">
+            <div class="container" data-aos="fade-up">
+                <h3>Únete al Servidor de Discord</h3>
+                <a href="URL_DISCORD_INVITE" target="_blank" class="promo-btn interactive">Unirse Ahora</a>
+            </div>
+        </section>
+        <section id="community-whatsapp" class="promo-banner">
+            <div class="container" data-aos="fade-up">
+                <h3>Sigue el Canal de WhatsApp</h3>
+                <a href="URL_WHATSAPP_CHANNEL" target="_blank" class="promo-btn interactive">Seguir Canal</a>
+            </div>
+        </section>
+
+        <!-- ======================= CONTACTO ======================= -->
+        <section id="contact">
+            <div class="cotainer" data-aos="fade-up">
+                <h2 class="with-line">Contacto</h2>
+                <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="contact-form">
+                    <div class="form-group"><input type="text" name="name" placeholder="Tu Nombre" required></div>
+                    <div class="form-group"><input type="email" name="email" placeholder="Tu Correo Electrónico" required></div>
+                    <div class="form-group"><textarea name="message" rows="6" placeholder="Tu Mensaje" required></textarea></div>
+                    <button type="submit" class="submit-btn interactive">Enviar Mensaje</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======================= FOOTER ======================= -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 JGREGORIOG77. Todos los derechos reservados.</p>
+            <div class="footer-socials">
+                <!-- Iconos SVG para todas las plataformas -->
+                <a href="URL_TWITCH" target="_blank" class="interactive" title="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.714 0h1.715v5.143h-1.715zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0H6zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714v9.429z"/></svg></a>
+                <a href="URL_KICK" target="_blank" class="interactive" title="Kick"><svg viewBox="0 0 24 24"><path d="M18.834 0H5.166C2.313 0 0 2.313 0 5.166v13.668C0 21.687 2.313 24 5.166 24h13.668C21.687 24 24 21.687 24 18.834V5.166C24 2.313 21.687 0 18.834 0zM8.5 18.5V5.5l7 6.5-7 6.5z"/></svg></a>
+                <a href="URL_YOUTUBE" target="_blank" class="interactive" title="YouTube"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.407-.501-9.407-.501s-7.537 0-9.407.501A3.007 3.007 0 0 0 .505 6.205a31.247 31.247 0 0 0-.505 7.058A31.247 31.247 0 0 0 .505 20.32a3.007 3.007 0 0 0 2.088 2.088c1.87.501 9.407.501 9.407.501s7.537 0 9.407-.501a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .505-7.057 31.247 31.247 0 0 0-.505-7.058zM9.545 15.568V7.505l6.622 4.033-6.622 4.03z"/></svg></a>
+                <a href="URL_TIKTOK" target="_blank" class="interactive" title="TikTok"><svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.38 1.92-3.54 2.96-5.94 2.96-1.92 0-3.84-.77-5.29-1.96-1.45-1.19-2.3-2.99-2.43-4.88-.13-1.91.18-3.83.93-5.54.75-1.71 1.99-3.08 3.55-4.08s3.47-1.48 5.37-1.48c.09 0 .17 0 .26.01.01 1.3.01 2.59-.01 3.89-1.18.27-2.35.78-3.32 1.54-.97.76-1.72 1.83-2.02 3.05-.3 1.22-.21 2.52.24 3.66.45 1.14 1.25 2.11 2.29 2.77s2.3 1 3.55.77c1.25-.23 2.37-1.01 3.12-2.05.75-1.04 1.1-2.31 1.01-3.59-.01-1.27-.38-2.52-1.01-3.62-.63-1.1-1.57-1.95-2.69-2.48-.48-.23-.98-.42-1.49-.58-.01-1.31-.01-2.62.01-3.93z"/></svg></a>
+                <a href="URL_INSTAGRAM" target="_blank" class="interactive" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.85s.012-3.584.07-4.85c.149-3.227 1.664-4.771 4.919-4.919C8.415 2.175 8.796 2.163 12 2.163m0-2.163C8.74 0 8.333.011 7.053.069 2.59.215 0 2.59 0 7.053c-.058 1.281-.069 1.688-.069 4.947s.011 3.666.069 4.947c.149 4.46 2.59 7.053 7.053 7.053 1.28.058 1.688.069 4.947.069s3.666-.011 4.947-.069c4.46-.149 7.053-2.59 7.053-7.053.058-1.281.069-1.688.069-4.947s-.011-3.666-.069-4.947C21.41 2.59 19.01 0 14.947 0 13.667.011 13.26 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg></a>
+                <a href="URL_FACEBOOK" target="_blank" class="interactive" title="Facebook"><svg viewBox="0 0 24 24"><path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.35C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.732 0 1.325-.593 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z"/></svg></a>
+                <a href="URL_DISCORD_INVITE" target="_blank" class="interactive" title="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.369a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.229a18.258 18.258 0 0 0-5.484 0 18.652 18.652 0 0 0-.608-1.229.074.074 0 0 0-.079-.037A19.736 19.736 0 0 0 3.683 4.37a.074.074 0 0 0-.037.079C3.766 6.249 4.11 9.632 4.11 9.632a.074.074 0 0 0 .015.056s.229.409.612.859c-.828.43-1.6.838-2.279 1.221a.074.074 0 0 0-.042.069c-.149.695-.222 1.408-.222 2.120s.074 1.425.222 2.120a.074.074 0 0 0 .042.069c.679.383 1.451.791 2.279 1.222s.597.859.612.859a.074.074 0 0 0 .015.056s.345 3.383.465 5.145a.074.074 0 0 0 .037.079c1.64.652 3.32.993 4.986.993s3.346-.341 4.986-.993a.074.074 0 0 0 .037-.079c.12-1.762.465-5.145.465-5.145a.074.074 0 0 0 .015-.056s.229-.409.612-.859c.828-.43 1.6-.838 2.279-1.222a.074.074 0 0 0 .042-.069c.149-.695-.222-1.408-.222-2.120s-.074-1.425-.222-2.120a.074.074 0 0 0-.042-.069c-.679-.383-1.451-.791-2.279-1.221s-.597-.859-.612-.859a.074.074 0 0 0 .015-.056s.345-3.383.465-5.145a.074.074 0 0 0-.037-.079zM8.02 15.33c-1.183 0-2.15-1.08-2.15-2.41s.967-2.41 2.15-2.41c1.182 0 2.149 1.08 2.149 2.41s-.967 2.41-2.149 2.41zm7.96 0c-1.183 0-2.15-1.08-2.15-2.41s.967-2.41 2.15-2.41c1.182 0 2.149 1.08 2.149 2.41s-.967 2.41-2.149 2.41z"/></svg></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================= MODAL/OVERLAY ======================= -->
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <a href="#" class="modal-close interactive">&times;</a>
+            <div id="modal-embed-container"></div>
+        </div>
+    </div>
+
+    <!-- ======================= SCRIPTS ======================= -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('JGREGORIOG77 Website V8 Initializing...');
+
+            // --- INICIALIZACIÓN DE AOS ---
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ duration: 1000, easing: 'ease-in-out', once: true, offset: 50 });
+            }
+
+            // --- LÓGICA DEL HEADER FIJO ---
+            const header = document.querySelector('header');
+            if (header) {
+                window.addEventListener('scroll', () => {
+                    header.classList.toggle('sticky', window.scrollY > 50);
+                });
+            }
+
+            // --- NAVEGACIÓN ACTIVA POR SCROLL (ACTUALIZADO) ---
+            const sections = document.querySelectorAll('main section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const navActiveLine = document.getElementById('nav-active-line');
+            
+            function updateActiveLink() {
+                let currentSectionId = 'hero';
+                const headerOffset = 150;
+                
+                sections.forEach(section => {
+                    if (window.scrollY >= section.offsetTop - headerOffset) {
+                        currentSectionId = section.id;
+                    }
+                });
+
+                let activeLink = null;
+                navLinks.forEach(link => {
+                    link.classList.remove('active-link');
+                    if (link.getAttribute('href') === `#${currentSectionId}`) {
+                        link.classList.add('active-link');
+                        activeLink = link;
+                    }
+                });
+                
+                if (activeLink && navActiveLine) {
+                    navActiveLine.style.width = `${activeLink.offsetWidth}px`;
+                    navActiveLine.style.left = `${activeLink.offsetLeft}px`;
+                } else if (navActiveLine) {
+                    const homeLink = document.querySelector('a[href="#hero"]');
+                    if (homeLink && window.scrollY < sections[0].offsetTop - headerOffset) {
+                        navActiveLine.style.width = `${homeLink.offsetWidth}px`;
+                        navActiveLine.style.left = `${homeLink.offsetLeft}px`;
+                    } else {
+                        navActiveLine.style.width = '0px';
+                    }
+                }
+            }
+            window.addEventListener('scroll', updateActiveLink);
+            window.addEventListener('resize', updateActiveLink);
+            updateActiveLink();
+
+            // --- LÓGICA DEL MENÚ MÓVIL ---
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('nav ul');
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+            }
+
+            // --- LÓGICA DEL CURSOR PERSONALIZADO ---
+            const cursor = document.querySelector('.custom-cursor');
+            if (cursor) {
+                document.addEventListener('mousemove', e => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                });
+                document.querySelectorAll('.interactive').forEach(el => {
+                    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+                });
+            }
+
+            // --- LÓGICA DEL EFECTO GLITCH ---
+            const glitchTarget = document.querySelector('.glitch-text');
+            if (glitchTarget) {
+                setInterval(() => {
+                    glitchTarget.classList.add('glitching');
+                    setTimeout(() => glitchTarget.classList.remove('glitching'), 150);
+                }, 4000 + Math.random() * 2000);
+            }
+
+            // --- LÓGICA DEL MODAL DE CONTENIDO ---
+            const modalOverlay = document.querySelector('.modal-overlay');
+            const modalContainer = document.getElementById('modal-embed-container');
+            const closeModalBtn = document.querySelector('.modal-close');
+            const contentCards = document.querySelectorAll('.content-card');
+
+            contentCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const url = card.dataset.url;
+                    const embedCode = `<iframe src="${url}?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                    modalContainer.innerHTML = embedCode;
+                    document.body.classList.add('modal-open');
+                    modalOverlay.classList.add('visible');
+                });
+            });
+
+            const closeModal = () => {
+                modalOverlay.classList.remove('visible');
+                document.body.classList.remove('modal-open');
+                modalContainer.innerHTML = '';
+            };
+
+            closeModalBtn.addEventListener('click', e => { e.preventDefault(); closeModal(); });
+            modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+
+            // --- LÓGICA DEL COMMAND CENTER ---
+            const commandButtons = document.querySelectorAll('.platform-button');
+            commandButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const url = button.dataset.url;
+                    if (url && url.startsWith('URL_')) {
+                        console.warn('URL no configurada para este botón.');
+                    } else if (url) {
+                        window.open(url, '_blank');
+                    }
+                });
+            });
+
+            // --- SIMULACIÓN DE ESTADO "EN VIVO" ---
+            function simulateLiveStatus() {
+                document.querySelectorAll('.status-item').forEach(item => {
+                    item.classList.add('live');
+                });
+            }
+            simulateLiveStatus();
+
+            // --- FONDO DE ESTRELLAS Y ESTRELLA FUGAZ ---
+            const bgEffects = document.getElementById('background-effects');
+            if (bgEffects) {
+                const starCount = 150;
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.width = `${Math.random() * 2 + 1}px`;
+                    star.style.height = star.style.width;
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.animationDelay = `${Math.random() * 2}s`;
+                    star.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                    bgEffects.appendChild(star);
+                }
+            }
+            
+            // --- LÓGICA PARA FONDO BLUR EN TARJETAS DE CONTENIDO ---
+            document.querySelectorAll('.content-card').forEach(card => {
+                const bgImage = card.style.backgroundImage;
+                if (bgImage) {
+                    const infoBox = card.querySelector('.card-info');
+                    if (infoBox) {
+                        infoBox.style.setProperty('--bg-image', bgImage);
+                    }
+                }
+            });
+
+            console.log('Initialization Complete.');
+        });
+    </script>
+</body>
+</html>
