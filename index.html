@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JGREGORIOG77 - Comunidad Gamer V8</title>
+    <title>JGREGORIOG77 - Comunidad Gamer V9</title>
 
     <!-- Tipografía de Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -112,14 +112,14 @@
             to { text-shadow: 0 0 10px var(--primary), 0 0 22px var(--primary); }
         }
 
-        /* --- 4. HEADER Y NAVEGACIÓN (ACTUALIZADO) --- */
+        /* --- 4. HEADER Y NAVEGACIÓN --- */
         header {
             position: fixed; width: 100%; top: 0; left: 0; z-index: 1000;
-            background-color: transparent; /* Transparente por defecto */
+            background-color: transparent;
             transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
         }
         header.sticky { 
-            background-color: rgba(10, 10, 20, 0.95); /* Color sólido casi opaco */
+            background-color: rgba(10, 10, 20, 0.95);
             backdrop-filter: blur(10px); 
         }
         nav { display: flex; justify-content: space-between; align-items: center; height: 80px; }
@@ -132,7 +132,28 @@
             background-color: var(--primary); box-shadow: 0 0 10px var(--primary);
             transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        .menu-toggle { display: none; }
+        .menu-toggle {
+            display: none;
+            width: 30px;
+            height: 22px;
+            position: relative;
+            cursor: pointer;
+            z-index: 1001; /* Asegura que esté sobre el menú */
+        }
+        .bar {
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            position: absolute;
+            transition: all 0.3s ease-in-out;
+        }
+        .bar1 { top: 0; }
+        .bar2 { top: 50%; transform: translateY(-50%); }
+        .bar3 { bottom: 0; }
+        .menu-toggle.active .bar1 { top: 50%; transform: translateY(-50%) rotate(45deg); }
+        .menu-toggle.active .bar2 { opacity: 0; }
+        .menu-toggle.active .bar3 { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+
 
         /* --- 5. BANNER "EN VIVO" --- */
         .live-status-banner {
@@ -180,13 +201,18 @@
             border-radius: 10px; overflow: hidden; transition: all 0.3s ease;
             height: 250px;
             position: relative;
-            background-size: cover;
-            background-position: center;
         }
         .content-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); }
         .content-card.youtube:hover { border-color: var(--youtube-red); }
         .content-card.instagram:hover { border-color: var(--instagram-pink); }
         .content-card.tiktok:hover { border-color: var(--tiktok-white); }
+        .card-thumbnail {
+            width: 100%; height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+        .card-thumbnail img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .card-info { 
             position: absolute;
             bottom: 0;
@@ -194,6 +220,7 @@
             width: 100%;
             padding: 20px;
             background: linear-gradient(to top, rgba(10, 10, 20, 0.95) 20%, rgba(10, 10, 20, 0) 100%);
+            z-index: 2;
         }
         .card-info h3 { font-size: 1.2rem; margin-bottom: 10px; color: #fff; }
         .card-platform { font-weight: 700; }
@@ -291,6 +318,7 @@
             .menu-toggle { display: flex; }
             .about-content { grid-template-columns: 1fr; }
             #nav-active-line { display: none; }
+            .contact-form { margin: 0 15px; } /* Margen para el formulario en móvil */
         }
     </style>
 </head>
@@ -316,7 +344,9 @@
                     <div id="nav-active-line"></div>
                 </ul>
                 <div class="menu-toggle interactive">
-                    <div class="bar"></div> <div class="bar"></div> <div class="bar"></div>
+                    <div class="bar bar1"></div>
+                    <div class="bar bar2"></div>
+                    <div class="bar bar3"></div>
                 </div>
             </nav>
         </div>
@@ -371,19 +401,28 @@
             <div class="container" data-aos="fade-up">
                 <h2 class="with-line">Contenido Destacado</h2>
                 <div class="content-grid">
-                    <div class="content-card youtube interactive" data-url="https://www.youtube.com/embed/dQw4w9WgXcQ" style="background-image: url('https://placehold.co/600x400/000000/FFFFFF?text=Fondo+Video');">
+                    <div class="content-card youtube interactive" data-url="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                        <div class="card-thumbnail">
+                            <img src="https://placehold.co/600x400/000000/FFFFFF?text=Fondo+Video" alt="Thumbnail de YouTube">
+                        </div>
                         <div class="card-info">
                             <h3>La Partida que lo Cambió Todo</h3>
                             <span class="card-platform youtube">YouTube</span>
                         </div>
                     </div>
-                    <div class="content-card instagram interactive" data-url="https://www.instagram.com/p/C2XvYzOMk-p/embed" style="background-image: url('https://placehold.co/600x400/000000/FFFFFF?text=Fondo+Post');">
+                    <div class="content-card instagram interactive" data-url="https://www.instagram.com/p/C2XvYzOMk-p/embed">
+                        <div class="card-thumbnail">
+                            <img src="https://placehold.co/600x400/000000/FFFFFF?text=Fondo+Post" alt="Thumbnail de Instagram">
+                        </div>
                         <div class="card-info">
                             <h3>Nuestro Setup Gamer 2025</h3>
                             <span class="card-platform instagram">Instagram</span>
                         </div>
                     </div>
-                    <div class="content-card tiktok interactive" data-url="https://www.tiktok.com/@google/video/7081237731129593094" style="background-image: url('https://placehold.co/600x400/000000/FFFFFF?text=Fondo+Clip');">
+                    <div class="content-card tiktok interactive" data-url="https://www.tiktok.com/@google/video/7081237731129593094">
+                        <div class="card-thumbnail">
+                            <img src="https://placehold.co/600x400/000000/FFFFFF?text=Fondo+Clip" alt="Thumbnail de TikTok">
+                        </div>
                         <div class="card-info">
                             <h3>El Clip más Random</h3>
                             <span class="card-platform tiktok">TikTok</span>
@@ -424,7 +463,7 @@
 
         <!-- ======================= CONTACTO ======================= -->
         <section id="contact">
-            <div class="cotainer" data-aos="fade-up">
+            <div class="container" data-aos="fade-up">
                 <h2 class="with-line">Contacto</h2>
                 <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="contact-form">
                     <div class="form-group"><input type="text" name="name" placeholder="Tu Nombre" required></div>
@@ -465,7 +504,7 @@
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('JGREGORIOG77 Website V8 Initializing...');
+            console.log('JGREGORIOG77 Website V9 Initializing...');
 
             // --- INICIALIZACIÓN DE AOS ---
             if (typeof AOS !== 'undefined') {
@@ -480,7 +519,7 @@
                 });
             }
 
-            // --- NAVEGACIÓN ACTIVA POR SCROLL (ACTUALIZADO) ---
+            // --- NAVEGACIÓN ACTIVA POR SCROLL ---
             const sections = document.querySelectorAll('main section[id]');
             const navLinks = document.querySelectorAll('.nav-link');
             const navActiveLine = document.getElementById('nav-active-line');
@@ -525,7 +564,10 @@
             const menuToggle = document.querySelector('.menu-toggle');
             const navMenu = document.querySelector('nav ul');
             if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+                menuToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    menuToggle.classList.toggle('active');
+                });
             }
 
             // --- LÓGICA DEL CURSOR PERSONALIZADO ---
@@ -596,7 +638,7 @@
             }
             simulateLiveStatus();
 
-            // --- FONDO DE ESTRELLAS Y ESTRELLA FUGAZ ---
+            // --- FONDO DE ESTRELLAS ---
             const bgEffects = document.getElementById('background-effects');
             if (bgEffects) {
                 const starCount = 150;
@@ -612,17 +654,6 @@
                     bgEffects.appendChild(star);
                 }
             }
-            
-            // --- LÓGICA PARA FONDO BLUR EN TARJETAS DE CONTENIDO ---
-            document.querySelectorAll('.content-card').forEach(card => {
-                const bgImage = card.style.backgroundImage;
-                if (bgImage) {
-                    const infoBox = card.querySelector('.card-info');
-                    if (infoBox) {
-                        infoBox.style.setProperty('--bg-image', bgImage);
-                    }
-                }
-            });
 
             console.log('Initialization Complete.');
         });
